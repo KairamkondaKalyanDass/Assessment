@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>GitHub</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    
+<script>
+    angular.module('githubApp',[])
+    .controller('githubController', function ($scope, $http) {
+        $scope.getRepository = function () {
+            $http.get('https://api.github.com/users/' + $scope.githubName + '/repos').
+        then(function (response) {
+            $scope.result = response.data;
+        });
+        }
+    });
+    
+    </script>
+
+</head>
+<body ng-app="githubApp">
+    <div ng-controller="githubController">
+        <p>
+            Enter GitHub Username: <input type="text" ng-model="githubName" value="Enter GitHub Username">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button ng-click="getRepository()">Get Repository Details</button>
+        </p>
+
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <td> Name </td>
+                        <td> URL</td>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in result">
+                        <td>{{item.name}}</td>
+                        <td align="center"><a href={{item.url}} >{{item.url}}</a></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+</body>
+</html>

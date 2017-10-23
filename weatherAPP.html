@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Weather</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    
+<script>
+    angular.module('weatherApp',[])
+    .controller('weatherController', function ($scope, $http) {
+        $scope.getWeather = function () {
+            $http.get('http://api.apixu.com/v1/forecast.json?key=09261758378c4e469b8190120172010&days=7&q=' + $scope.cityName).
+        then(function (response) {
+            $scope.result = response.data.forecast;
+        });
+        }
+    });
+    /*function gettingJSON(){
+        document.write("jquery loaded");
+        var url = 'http://api.apixu.com/v1/forecast.json?key=09261758378c4e469b8190120172010&days=7&q=';
+        var location = 'Dallas';
+        $.getJSON(url+location, function (data) {
+                       
+            var jsonData = JSON.stringify(data);
+            console.log(data);
+            var result = data.forecast.forecastday;
+            for (var i = 0; i < result.length; i++)
+                {
+                document.write("<br><br>Date: " + result[i].date);
+                
+                document.write("<br>Max Temp: " + result[i].day.maxtemp_f);
+                
+                document.write("<br>Min Temp: " + result[i].day.mintemp_f);
+                }
+
+            });
+    }*/
+    </script>
+
+</head>
+<body ng-app="weatherApp">
+    <div ng-controller="weatherController">
+        <p>
+            Enter city Name: <input type="text" ng-model="cityName" value="Enter city name"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button ng-click="getWeather()">Get Weather Details</button>
+        </p>
+
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <td> Date </td>
+                        <td> Minimum Temperatore(F)</td>
+                        <td> Maximum Temperatore(F)</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in result.forecastday">
+                        <td>{{item.date}}</td>
+                        <td align="center">{{item.day.mintemp_f}}</td>
+                        <td align="center">{{item.day.maxtemp_f}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+</body>
+</html>
